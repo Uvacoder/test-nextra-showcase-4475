@@ -29,6 +29,7 @@ export default async function (
     theme,
     themeConfig,
     defaultLocale,
+    unstable_codehike,
     unstable_flexsearch,
     unstable_staticImage,
     mdxOptions,
@@ -98,10 +99,16 @@ export default async function (
   }
 
   const { result, titleText, headings, hasH1, structurizedData } =
-    await compileMdx(content, mdxOptions, {
-      unstable_staticImage,
-      unstable_flexsearch
-    }, resourcePath)
+    await compileMdx(
+      content,
+      mdxOptions,
+      {
+        unstable_codehike,
+        unstable_staticImage,
+        unstable_flexsearch
+      },
+      resourcePath
+    )
   content = result
   content = content.replace('export default MDXContent;', '')
 

@@ -5,6 +5,7 @@ const withNextra = require("nextra")({
     codeblocks: true,
   },
   unstable_staticImage: true,
+  unstable_codehike: true,
 });
 
 module.exports = withNextra({

@@ -6,6 +6,7 @@ export interface LoaderOptions {
   themeConfig: string
   locales: string[]
   defaultLocale: string
+  unstable_codehike: boolean
   unstable_staticImage: boolean
   unstable_flexsearch: boolean
   mdxOptions: Pick<ProcessorOptions, 'rehypePlugins' | 'remarkPlugins'>

@@ -6,6 +6,7 @@ import remarkHandler, { HeadingMeta } from './mdx-plugins/remark'
 import { LoaderOptions } from './types'
 import structurize from './mdx-plugins/structurize'
 import { parseMeta, attachMeta } from './mdx-plugins/rehype-handler'
+import { remarkCodeHike } from '@code-hike/mdx'
 
 // @ts-ignore
 import theme from './theme.json'
@@ -46,6 +47,7 @@ export async function compileMdx(
   source: string,
   mdxOptions: LoaderOptions['mdxOptions'] = {},
   nextraOptions: {
+    unstable_codehike?: boolean
     unstable_staticImage: boolean
     unstable_flexsearch:
       | boolean
@@ -69,13 +71,18 @@ export async function compileMdx(
       ...(nextraOptions.unstable_staticImage ? [remarkStaticImage] : []),
       ...(nextraOptions.unstable_flexsearch
         ? [structurize(structurizedData, nextraOptions.unstable_flexsearch)]
+        : []),
+      ...(nextraOptions.unstable_codehike
+        ? [[remarkCodeHike, { theme, lineNumbers: false }] as any]
         : [])
     ].filter(Boolean),
     // @ts-ignore
     rehypePlugins: [
       ...(mdxOptions.rehypePlugins || []),
       parseMeta,
-      [rehypePrettyCode, rehypePrettyCodeOptions],
+      ...(nextraOptions.unstable_codehike
+        ? []
+        : [[rehypePrettyCode, rehypePrettyCodeOptions]]),
       attachMeta
     ].filter(Boolean)
   })

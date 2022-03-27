@@ -141,6 +141,7 @@ interface HeadingProps {
 const H2 =
   (context: { index: number }) =>
   ({ children, ...props }: HeadingProps) => {
+    if (!props.id) return <h2 {...props}>{children}</h2>
     return (
       <HeaderLink tag="h2" context={context} {...props}>
         {children}
@@ -151,6 +152,7 @@ const H2 =
 const H3 =
   (context: { index: number }) =>
   ({ children, ...props }: HeadingProps) => {
+    if (!props.id) return <h3 {...props}>{children}</h3>
     return (
       <HeaderLink tag="h3" context={context} {...props}>
         {children}
@@ -161,6 +163,7 @@ const H3 =
 const H4 =
   (context: { index: number }) =>
   ({ children, ...props }: HeadingProps) => {
+    if (!props.id) return <h4 {...props}>{children}</h4>
     return (
       <HeaderLink tag="h4" context={context} {...props}>
         {children}
@@ -171,6 +174,7 @@ const H4 =
 const H5 =
   (context: { index: number }) =>
   ({ children, ...props }: HeadingProps) => {
+    if (!props.id) return <h5 {...props}>{children}</h5>
     return (
       <HeaderLink tag="h5" context={context} {...props}>
         {children}
@@ -181,6 +185,7 @@ const H5 =
 const H6 =
   (context: { index: number }) =>
   ({ children, ...props }: HeadingProps) => {
+    if (!props.id) return <h6 {...props}>{children}</h6>
     return (
       <HeaderLink tag="h6" context={context} {...props}>
         {children}

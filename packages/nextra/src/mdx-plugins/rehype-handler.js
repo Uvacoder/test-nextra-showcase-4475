@@ -2,13 +2,14 @@ import Slugger from 'github-slugger'
 
 import { getFlattenedValue } from './remark'
 
-function visit(node, tagNames, handler) {
+function visit(node, tagNames, handler, filter) {
+  if (filter && !filter(node)) return
   if (tagNames.includes(node.tagName)) {
     handler(node)
     return
   }
   if (node.children) {
-    node.children.forEach(n => visit(n, tagNames, handler))
+    node.children.forEach(n => visit(n, tagNames, handler, filter))
   }
 }
 
@@ -40,19 +41,33 @@ export function attachMeta() {
   return tree => {
     const slugger = new Slugger()
 
-    visit(tree, ['div', 'h2', 'h3', 'h4', 'h5', 'h6'], node => {
-      if (node.tagName === 'div') {
-        // Attach filename
-        if (!('data-rehype-pretty-code-fragment' in node.properties)) return
-        node.properties['data-nextra-code'] = ''
-        if ('__nextra_filename__' in node) {
-          node.properties['data-filename'] = node.__nextra_filename__
+    visit(
+      tree,
+      ['div', 'h2', 'h3', 'h4', 'h5', 'h6'],
+      node => {
+        if (node.tagName === 'div') {
+          // Attach filename
+          if (!('data-rehype-pretty-code-fragment' in node.properties)) return
+          node.properties['data-nextra-code'] = ''
+          if ('__nextra_filename__' in node) {
+            node.properties['data-filename'] = node.__nextra_filename__
+          }
+        } else {
+          // Attach slug
+          node.properties.id =
+            node.properties.id || slugger.slug(getFlattenedValue(node))
         }
-      } else {
-        // Attach slug
-        node.properties.id =
-          node.properties.id || slugger.slug(getFlattenedValue(node))
+      },
+      node => {
+        if (
+          node.type === 'mdxJsxFlowElement' &&
+          node.name &&
+          node.name.startsWith('CH.')
+        ) {
+          return false
+        }
+        return true
       }
-    })
+    )
   }
 }

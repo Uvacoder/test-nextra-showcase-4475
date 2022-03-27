@@ -10,13 +10,15 @@ export interface HeadingMeta {
 function visit(
   node: any,
   tester: (node: any) => boolean,
-  handler: (node: any) => any
+  handler: (node: any) => any,
+  filter: (node: any) => boolean
 ) {
+  if (!filter(node)) return
   if (tester(node)) {
     handler(node)
   }
   if (node.children) {
-    node.children.forEach((n: any) => visit(n, tester, handler))
+    node.children.forEach((n: any) => visit(n, tester, handler, filter))
   }
 }
 
@@ -69,6 +71,15 @@ export default function remarkHeadings(this: Processor) {
             delete node.data._mdxExplicitJsx
           }
         }
+      },
+      node => {
+        // Ignore nodes inside `<CH.*>` (Code Hike).
+        if (node.type === 'mdxJsxFlowElement' && node.name) {
+          if (node.name.startsWith('CH.')) {
+            return false
+          }
+        }
+        return true
       }
     )
     done()
