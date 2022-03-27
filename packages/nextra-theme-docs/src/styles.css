@@ -913,21 +913,21 @@ table tr td {
 .ch-spotlight-sticker {
   @apply sticky flex top-20 self-stretch flex-col justify-center;
   width: 420px;
-  min-height: Min(100%, 80vh);
+  min-height: min(100%, 80vh);
   max-height: 80vh;
 }
 .ch-spotlight-sticker .ch-codeblock,
 .ch-spotlight-sticker .ch-codegroup {
   width: 100%;
   min-width: 100%;
-  min-height: Min(100%, 80vh);
+  min-height: min(100%, 80vh);
   max-height: 80vh;
   margin-top: 0;
   margin-bottom: 0;
   flex: 1;
 }
 .ch-spotlight-with-preview .ch-spotlight-sticker {
-  height: 80vh;
+  /* height: 80vh; */
   @apply gap-4;
 }
 .ch-spotlight-with-preview .ch-spotlight-sticker .ch-codeblock,
@@ -1106,5 +1106,30 @@ article.nextra-body {
         @apply mt-0;
       }
     }
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .ch-spotlight,
+  .ch-scrollycoding {
+    @apply flex-col-reverse;
+  }
+  .ch-spotlight-tabs,
+  .ch-scrollycoding-content {
+    @apply flex-row px-6 py-4 -mx-6 -my-4 overflow-x-scroll snap-x scroll-pl-6 snap-mandatory overscroll-x-contain;
+    .ch-spotlight-tab,
+    .ch-scrollycoding-step-content {
+      @apply snap-always snap-start min-w-[80%];
+    }
+    .ch-scrollycoding-step-content {
+      @apply min-w-full;
+    }
+  }
+  .ch-spotlight-sticker,
+  .ch-scrollycoding-sticker {
+    @apply static w-full;
+  }
+  .ch-slideshow-slide {
+    /* @apply flex-col; */
   }
 }
